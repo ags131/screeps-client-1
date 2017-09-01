@@ -1,13 +1,6 @@
 <template>
 
   <div id="app">
-    <div id="links">
-      <router-link :to="{name: 'login'}">login</router-link>
-      <router-link :to="{name: 'register'}">register</router-link>
-      <router-link :to="{name: 'room', params: {roomName: 'E0N0'}}">room</router-link>
-      <router-link :to="{name: 'map'}">map</router-link>
-      <router-link :to="{name: 'logout'}">logout</router-link>
-    </div>
     <router-view></router-view>
   </div>
 

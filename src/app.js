@@ -6,7 +6,9 @@ import Login from './pages/Login.vue';
 import Logout from './pages/Logout.vue';
 import Register from './pages/Register.vue';
 import RoomView from './pages/RoomView.vue';
+import RoomViewStream from './pages/RoomViewStream.vue';
 import MapView from './pages/MapView.vue';
+import MapViewStream from './pages/MapViewStream.vue';
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
@@ -39,9 +41,21 @@ const routes = [
     props: true
   },
   {
+    name: 'room',
+    path: '/room/:roomName/stream',
+    component: RoomViewStream,
+    props: true
+  },
+  {
     name: 'map',
     path: '/map/',
     component: MapView,
+    props: true
+  },
+  {
+    name: 'map',
+    path: '/map/stream',
+    component: MapViewStream,
     props: true
   },
   {

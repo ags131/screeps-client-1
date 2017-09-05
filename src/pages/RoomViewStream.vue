@@ -5,13 +5,21 @@
       <tr><td id="room-main-td">
         <div id="room-main">
           <div id="room-name">
-            BotArena Room {{ roomName }} - Owned By: {{ owner }} - {{ sign }}
-            <router-link to="/map/stream?room=W5N5">map</router-link>
+            <img class="logo" src="https://beta.screepspl.us/images/logo_small.png"><b style="padding-right:10px">BotArena</b> Room: {{ roomName }} - RCL: {{ level }} - Owned By: {{ owner }} 
+            <!-- <router-link to="/map/stream?room=W5N5">map</router-link> -->
           </div>
           <div class="cont">
             <game :client="client"></game>
             <div class="rooms">
               <table>
+                <tr>
+                  <th colspan="3">Claimed Rooms</th>
+                </tr>
+                <tr>
+                  <th>Room</th>
+                  <th>RCL</th>
+                  <th>Owner</th>
+                </tr>
                 <template v-for="room in owned">
                   <tr class="room" v-bind:class="{ active: roomName == room.name }">
                     <td>{{ room.name }}</td>
@@ -48,6 +56,7 @@ export default {
     return {
       owner: '',
       sign: '',
+      level: 0,
       owned: [],
       ownedIndex: 0
     };
@@ -57,7 +66,7 @@ export default {
     this.setClientRoom();
     eventBus.$emit('resize');
 
-    this.interval = setInterval(() => this.fetchRooms(), 30*1000)
+    this.interval = setInterval(() => this.fetchRooms(), 15*1000)
     setTimeout(()=>this.fetchRooms(),1000)
   },
   beforeDestroy() {
@@ -141,20 +150,19 @@ export default {
           for (let x = 0;x<=11;x++) {
             for (let y = 0;y<=11;y++) {
               rooms.push(`W${x}N${y}`)
-              rooms.push(`E${x}S${y}`)
-              rooms.push(`E1${x}S${y}`)
-              rooms.push(`E2${x}S${y}`)
-              rooms.push(`E${x}S1${y}`)
-              rooms.push(`E1${x}S1${y}`)
-              rooms.push(`E2${x}S1${y}`)
+              // rooms.push(`E${x}S${y}`)
+              // rooms.push(`E1${x}S${y}`)
+              // rooms.push(`E2${x}S${y}`)
+              // rooms.push(`E${x}S1${y}`)
+              // rooms.push(`E1${x}S1${y}`)
+              // rooms.push(`E2${x}S1${y}`)
             }
           }
           return eventBus.api.req('POST','/api/game/map-stats',{ rooms, statName })
         }).then(({ data }) => {
           console.log('MAP',data)
-          this.owned.splice(0,this.owned.length);
+          this.owned = [];
           for(let name in data.stats){
-            if(name == this.roomName) continue
             let room = data.stats[name]
             if(room.own && room.own.level){
               room.name = name
@@ -166,13 +174,14 @@ export default {
             }
           }
           this.owned.sort((a, b) => {
-            return a.name > b.name?1:-1
+            return a.user.username.toLowerCase() > b.user.username.toLowerCase()?1:-1
           })
           // let rand = this.owned[Math.floor(this.owned.length * Math.random())]
           let next = this.owned[this.ownedIndex++ % this.owned.length]
           if (next) {
             this.roomName = next.name
             this.owner = next.user.username
+            this.level = next.own.level
             this.sign = next.sign && next.sign.label
             this.setClientRoom();
           }
@@ -193,6 +202,7 @@ export default {
 
 <style>
 html, body {
+  font-family: sans-serif;
   margin: 0;
   padding: 0;
   min-height: 100%;
@@ -226,6 +236,12 @@ html, body {
   flex: 1;
 }
 
+#room-name {
+  color:  white;
+  background: black;
+  font-size: 20pt;
+}
+
 #roomMaps {
   flex-direction: row;
   display: flex;
@@ -246,13 +262,17 @@ html, body {
 .cont > * {
   flex: 1;
 }
-.rooms {
+.rooms table {
   border-collapse: collapse;
   border-spacing: 0;
+  font-size: 20pt;
+  width: 100%;
 }
 
-.rooms td {
-  padding: 1px 2px;
+.rooms td, 
+.rooms th {
+  padding: 1px 8px;
+  text-align: left;
 }
 
 .rooms .room td, 
@@ -261,10 +281,14 @@ html, body {
 }
 
 .rooms .sign {
-  font-size: 8pt;
+  font-size: 16pt;
 }
 .room.active {
   background-color: white;
   color: black;
+}
+.logo {
+  width: 92px;
+  height: 42px;
 }
 </style>

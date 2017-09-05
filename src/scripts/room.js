@@ -82,9 +82,6 @@ export class Room {
 
     this.roomObjects = {};
 
-    this.controller = {}
-
-    
     screeps.roomTerrain(name, true).then(t =>{
       console.log("terrain", name, t);
       if (!t) return;
@@ -286,10 +283,6 @@ export class Room {
 
 
       robj.update(obj, this);
-
-      if(robj.obj.type == 'controller') {
-        this.controller = robj.obj
-      }
 
       if (created || robj.lastObj.x !== robj.obj.x 
             || robj.lastObj.y !== robj.obj.y) {

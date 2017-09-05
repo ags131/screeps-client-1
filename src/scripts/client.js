@@ -50,10 +50,6 @@ export class ScreepsClient {
     this.rooms = null;
   }
 
-  get controller(){
-    return this[ROOM] && this[ROOM].controller || { sign: { text: '' }}
-  }
-
   connect() {
 
     // screeps.on("console", line => console.log("console", line));

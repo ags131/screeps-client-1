@@ -120,8 +120,8 @@ export default {
 <style>
 .roomMap2 {
   position: relative;
-  width: 150px;
-  height: calc(150px + 1em + 4px);
+  width: 100px;
+  height: calc(100px + 1em + 4px);
 }
 
 .roomMapName {

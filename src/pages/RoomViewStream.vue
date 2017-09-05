@@ -4,7 +4,27 @@
     <table cellpadding="0" cellspacing="0" width="100%" height="100%">
       <tr><td id="room-main-td">
         <div id="room-main">
-          <game :client="client"></game>
+          <div id="room-name">
+            BotArena Room {{ roomName }} - Owned By: {{ owner }} - {{ sign }}
+            <router-link to="/map/stream?room=W5N5">map</router-link>
+          </div>
+          <div class="cont">
+            <game :client="client"></game>
+            <div class="rooms">
+              <table>
+                <template v-for="room in owned">
+                  <tr class="room" v-bind:class="{ active: roomName == room.name }">
+                    <td>{{ room.name }}</td>
+                    <td>{{ room.own.level }}</td>
+                    <td>{{ room.user.username }}</td>
+                  </tr>
+                  <tr class="sign" v-if="room.sign">
+                    <td colspan="3">{{ room.sign && room.sign.label }}</td>
+                  </tr>
+                </template>
+              </table>
+            </div>
+          </div>
         </div>
       </td></tr>
     </table>
@@ -18,18 +38,30 @@ import SplitPane from '../components/SplitPane.vue';
 import SplitPaneVertical from '../components/SplitPaneVertical.vue';
 import Game from '../components/Game.vue';
 import Console from '../components/Console.vue';
-import RoomMap from '../components/RoomMap.vue';
+import RoomMap from '../components/RoomMapStream.vue';
 import CodePane from '../components/CodePane.vue';
 import eventBus from '../global-events';
 
 export default {
   props: ['roomName'],
   data() {
-    return {};
+    return {
+      owner: '',
+      sign: '',
+      owned: [],
+      ownedIndex: 0
+    };
   },
 
   created() {
     this.setClientRoom();
+    eventBus.$emit('resize');
+
+    this.interval = setInterval(() => this.fetchRooms(), 30*1000)
+    setTimeout(()=>this.fetchRooms(),1000)
+  },
+  beforeDestroy() {
+    clearInterval(this.interval)
   },
 
   watch: {
@@ -41,6 +73,11 @@ export default {
     'roomName': function(roomName) {
       console.log('watch roomName');
       this.setClientRoom();
+    },
+
+    'nextRoom': function(roomName) {
+      this.roomName = roomName
+      this.setClientRoom();
     }
   },
 
@@ -51,7 +88,11 @@ export default {
     client() {
       return eventBus.client;
     },
-
+    controller() {
+      let controller = this.client && this.client.controller || { sign: { text: '' }}
+      console.log('com',controller,this.client)
+      return controller
+    },
     money() {
       return this.client && this.client.money || 0;
     },
@@ -90,6 +131,52 @@ export default {
 
     onResize() {
       eventBus.$emit('resize');
+    },
+
+    fetchRooms() {
+      eventBus.api.getToken()
+        .then(()=>{
+          let rooms = []
+          let statName = 'owner0'
+          for (let x = 0;x<=11;x++) {
+            for (let y = 0;y<=11;y++) {
+              rooms.push(`W${x}N${y}`)
+              rooms.push(`E${x}S${y}`)
+              rooms.push(`E1${x}S${y}`)
+              rooms.push(`E2${x}S${y}`)
+              rooms.push(`E${x}S1${y}`)
+              rooms.push(`E1${x}S1${y}`)
+              rooms.push(`E2${x}S1${y}`)
+            }
+          }
+          return eventBus.api.req('POST','/api/game/map-stats',{ rooms, statName })
+        }).then(({ data }) => {
+          console.log('MAP',data)
+          this.owned.splice(0,this.owned.length);
+          for(let name in data.stats){
+            if(name == this.roomName) continue
+            let room = data.stats[name]
+            if(room.own && room.own.level){
+              room.name = name
+              room.user = data.users[room.own.user]
+              if(room.sign) {
+                room.sign.label = room.sign && (room.sign.text + ' -' + data.users[room.sign.user].username) || ''
+              }
+              this.owned.push(room)
+            }
+          }
+          this.owned.sort((a, b) => {
+            return a.name > b.name?1:-1
+          })
+          // let rand = this.owned[Math.floor(this.owned.length * Math.random())]
+          let next = this.owned[this.ownedIndex++ % this.owned.length]
+          if (next) {
+            this.roomName = next.name
+            this.owner = next.user.username
+            this.sign = next.sign && next.sign.label
+            this.setClientRoom();
+          }
+        })
     }
   },
 
@@ -136,12 +223,7 @@ html, body {
 }
 
 #room-main {
-  /*flex: 1;*/
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  flex: 1;
 }
 
 #roomMaps {
@@ -153,4 +235,36 @@ html, body {
   overflow-x: scroll;
 }
 
+.rooms {
+  flex: 1 100px;
+  color:  white;
+  background-color: black;
+}
+.cont {
+  display: flex;
+}
+.cont > * {
+  flex: 1;
+}
+.rooms {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.rooms td {
+  padding: 1px 2px;
+}
+
+.rooms .room td, 
+.rooms .room tr {
+  border-top: 1px solid white;
+}
+
+.rooms .sign {
+  font-size: 8pt;
+}
+.room.active {
+  background-color: white;
+  color: black;
+}
 </style>

@@ -48,7 +48,7 @@ export default {
       let room = rooms[0];
 
       if (this.$route.path === '/') {
-        this.$router.replace({name: 'room', params: {roomName: room}});
+        this.$router.replace({name: 'room-stream', params: {roomName: room}});
       }
     }
   },

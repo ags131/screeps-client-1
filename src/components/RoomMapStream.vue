@@ -111,7 +111,7 @@ export default {
 
     mapSpotStyle(kind, spot) {
       // console.log('mapSpotStyle', kind, spot);
-      return {top: 2*spot[1]+'px', left: 2*spot[0]+'px', background: this.color(kind)};
+      return {top: 1.5*spot[1]+'px', left: 1.5*spot[0]+'px', background: this.color(kind)};
     }
   }
 }
@@ -120,8 +120,8 @@ export default {
 <style>
 .roomMap2 {
   position: relative;
-  width: 100px;
-  height: calc(100px + 1em + 4px);
+  width: 75px;
+  height: calc(75px + 1em + 4px);
 }
 
 .roomMapName {
@@ -133,7 +133,7 @@ export default {
   line-height: 1em;
   text-align: center;
   position: absolute;
-  width: 100%;
+  width: 75%;
   top: 5px;
 }
 
@@ -149,7 +149,7 @@ export default {
 }
 
 img {
-  width: 100px;
-  height: 100px;
+  width: 75px;
+  height: 75px;
 }
 </style>

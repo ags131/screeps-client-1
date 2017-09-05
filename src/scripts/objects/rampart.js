@@ -29,6 +29,8 @@ export default class Rampart extends GameObject {
 				!!room.layers['rampart'].grid.get(x, y)));
 			// console.log('rampart', obj, ns);
 			renderSquare(g, 0, 0, ns, 0x446688);
+			g.alpha = 0.8
+			// g.SetAlpha(0.5)
 			// g.lineStyle(1, 0xffffff, 1);
 			// // g.drawCircle(S(5), S(5), S(5));
 

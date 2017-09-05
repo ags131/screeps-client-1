@@ -41,7 +41,7 @@ const routes = [
     props: true
   },
   {
-    name: 'room',
+    name: 'room-stream',
     path: '/room/:roomName/stream',
     component: RoomViewStream,
     props: true
@@ -53,7 +53,7 @@ const routes = [
     props: true
   },
   {
-    name: 'map',
+    name: 'map-steam',
     path: '/map/stream',
     component: MapViewStream,
     props: true

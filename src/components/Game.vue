@@ -81,5 +81,8 @@ export default {
 </script>
 
 <style>
-
-</style>
+/* #room-main canvas {
+  width: 700px !important;
+  height: 700px !important;
+}
+ */</style>

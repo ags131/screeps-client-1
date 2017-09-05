@@ -50,19 +50,23 @@ export class Room {
     this.g.addChild(this.terrainG);
 
     let layers = [
+      'rampart',
       'road', 
       'constructedWall', 
       'container', 
       'energy', 
-      'extension', 
+      'extension',
+      'lab',
+      'link',
       'mineral', 
+      'extractor', 
       'source', 
       'controller',
       'spawn', 
-      'storage', 
+      'storage',
+      'terminal', 
       'tower', 
       'creep', 
-      'rampart',
       'unknown'
     ];
     this.layers = {};
@@ -77,6 +81,8 @@ export class Room {
     this.g.addChild(this.roomVisualC);
 
     this.roomObjects = {};
+
+    this.controller = {}
 
     
     screeps.roomTerrain(name, true).then(t =>{
@@ -269,6 +275,8 @@ export class Room {
 
         robj = new objType(obj);
         this.roomObjects[id] = robj;
+        if(!this.layers[type])
+          console.log(type)
         this.layers[type].container.addChild(robj.g);
 
         created = true;
@@ -278,6 +286,10 @@ export class Room {
 
 
       robj.update(obj, this);
+
+      if(robj.obj.type == 'controller') {
+        this.controller = robj.obj
+      }
 
       if (created || robj.lastObj.x !== robj.obj.x 
             || robj.lastObj.y !== robj.obj.y) {

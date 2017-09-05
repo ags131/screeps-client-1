@@ -48,7 +48,10 @@ export class ScreepsClient {
     this.roomName = "";
     this.shards = null;
     this.rooms = null;
+  }
 
+  get controller(){
+    return this[ROOM] && this[ROOM].controller || { sign: { text: '' }}
   }
 
   connect() {
@@ -94,6 +97,20 @@ export class ScreepsClient {
     screeps.subscribe(`user:${me._id}/console`, this.onConsole.bind(this));
     screeps.subscribe(`user:${me._id}/set-active-branch`, this.onActiveBranch.bind(this));
     screeps.subscribe(`user:${me._id}/code`, this.onCode.bind(this));
+
+    {
+      for (let x = 0;x<=11;x++) {
+        for (let y = 0;y<=11;y++) {
+          screeps.unsubscribe(`room:W${x}N${y}`)
+          screeps.unsubscribe(`room:E${x}S${y}`)
+          screeps.unsubscribe(`room:E${x}S1${y}`)
+          screeps.unsubscribe(`room:E1${x}S${y}`)
+          screeps.unsubscribe(`room:E1${x}S1${y}`)
+          screeps.unsubscribe(`room:E2${x}S${y}`)
+          screeps.unsubscribe(`room:E2${x}S1${y}`)
+        }
+      }
+    }
 
     let apirooms = await screeps.rooms();
     console.log(apirooms);
@@ -203,9 +220,13 @@ export class ScreepsClient {
   }
   // requestAnimationFrame(ts => { lastTimestamp = ts; gameLoop(ts); });
 
-  resize(...args) {
-    // console.log('client.resize', args);
-    return this[RENDERER].resize(...args);
+  resize(w, h) {
+    w = 1000
+    h = window.innerHeight
+    const size = 750
+    let ratio = Math.min(w / size, h / size)
+    this[STAGE].scale.x = this[STAGE].scale.y = ratio
+    return this[RENDERER].resize(size * ratio, size * ratio)
   }
 
   get view() {

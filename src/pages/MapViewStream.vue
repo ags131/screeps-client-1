@@ -52,7 +52,7 @@ export default {
       yoffset = +wy;
     }
     return {
-      squareSize: 100,
+      squareSize: 75,
       totalMovement: 0,
       pan: {x: 0, y: 0},
       offsetWidth: 0,
@@ -106,7 +106,7 @@ export default {
     },
 
     navigateToRoom(roomName) {
-      this.$router.push({name: 'room', params: {roomName}});
+      this.$router.push({name: 'room-stream', params: {roomName}});
     },
 
     mouseDown(e) {

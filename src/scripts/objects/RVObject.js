@@ -12,13 +12,14 @@ export default class RVObject extends GameObject {
     let obj = super.update(dobj, room);
 
     let g = this.g;
-    
+
     let canvas = this.getCanvas()
     let ctx = canvas.getContext('2d')
     let rv = new RoomVisual(canvas)
     rv.structure(1,1,obj.type,obj)
     let texture = new PIXI.Texture.fromCanvas(canvas)
     g.texture = texture
+    return obj
   }
 
   getCanvas(){

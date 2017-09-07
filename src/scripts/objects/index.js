@@ -15,9 +15,9 @@ import spawn from './spawn';
 import storage from './storage';
 import tower from './tower';
 import extractor from './extractor';
-import lab from './RVObject.js'
-import terminal from './RVObject.js'
-import nuker from './RVObject.js'
+import lab from './lab'
+import terminal from './terminal'
+import nuker from './RVObject'
 
 import unknown from './unknown';
 

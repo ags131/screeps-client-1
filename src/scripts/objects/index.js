@@ -13,6 +13,10 @@ import source from './source';
 import spawn from './spawn';
 import storage from './storage';
 import tower from './tower';
+import extractor from './extractor';
+import lab from './RVObject.js'
+import terminal from './RVObject.js'
+import nuker from './RVObject.js'
 
 import unknown from './unknown';
 
@@ -31,6 +35,9 @@ export default {
 	spawn,
 	storage,
 	tower,
-
+	extractor,
+	lab,
+	terminal,
+	nuker,
 	unknown,
 }

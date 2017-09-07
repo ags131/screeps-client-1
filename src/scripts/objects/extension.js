@@ -14,8 +14,13 @@ export default class Extension extends GameObject {
 		let g = this.g;
 
 		g.clear();
-		g.lineStyle(1, 0xffffff, 1);
+		g.lineStyle(1.5, 0x8FBB93, 1);
+		g.beginFill(0x555555);
 		g.drawCircle(S(5), S(5), S(4));
+		g.endFill()
+
+		g.lineStyle(3, 0x181818, 1);
+		g.drawCircle(S(5), S(5), S(3));
 
 		g.lineStyle(0, 0, 0);
 		g.beginFill(0xffff00);

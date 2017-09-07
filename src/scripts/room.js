@@ -58,15 +58,16 @@ export class Room {
       'extension',
       'lab',
       'link',
-      'mineral', 
-      'extractor', 
-      'source', 
+      'mineral',
+      'extractor',
+      'source',
       'controller',
-      'spawn', 
+      'spawn',
       'storage',
-      'terminal', 
-      'tower', 
-      'creep', 
+      'terminal',
+      'tower',
+      'constructionSite',
+      'creep',
       'unknown'
     ];
     this.layers = {};

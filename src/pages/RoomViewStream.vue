@@ -1,11 +1,10 @@
 <template>
-
   <div id="app">
     <table cellpadding="0" cellspacing="0" width="100%" height="100%">
       <tr><td id="room-main-td">
         <div id="room-main">
           <div id="room-name">
-            <img class="logo" src="https://beta.screepspl.us/images/logo_small.png"><b style="padding-right:10px">BotArena</b> Room: {{ roomName }} - RCL: {{ level }} - Owned By: {{ owner }} 
+            <img class="logo" src="https://beta.screepspl.us/images/logo_small.png"><b style="padding-right:10px">BotArena</b> Tick: {{ tick }} - Room: {{ roomName }} - RCL: {{ level }} - Owned By: {{ owner }} 
             <!-- <router-link to="/map/stream?room=W5N5">map</router-link> -->
           </div>
           <div class="cont">
@@ -31,6 +30,7 @@
                   </tr>
                 </template>
               </table>
+              <div style="display:none;font-size:32pt">We are experiencing some minor issues, tournament will resume shortly.</div>
             </div>
           </div>
         </div>
@@ -50,6 +50,8 @@ import RoomMap from '../components/RoomMapStream.vue';
 import CodePane from '../components/CodePane.vue';
 import eventBus from '../global-events';
 
+const RESTART_AFTER = Date.now() + (5 * 50 * 1000)
+
 export default {
   props: ['roomName'],
   data() {
@@ -58,7 +60,8 @@ export default {
       sign: '',
       level: 0,
       owned: [],
-      ownedIndex: 0
+      ownedIndex: 0,
+      tick: 0
     };
   },
 
@@ -66,7 +69,7 @@ export default {
     this.setClientRoom();
     eventBus.$emit('resize');
 
-    this.interval = setInterval(() => this.fetchRooms(), 15*1000)
+    this.interval = setInterval(() => this.fetchRooms(), 10*1000)
     setTimeout(()=>this.fetchRooms(),1000)
   },
   beforeDestroy() {
@@ -143,8 +146,15 @@ export default {
     },
 
     fetchRooms() {
+      if (Date.now() > RESTART_AFTER && this.ownedIndex && (this.ownedIndex+1)% this.owned.length === 0) {
+        location.reload()
+        return
+      }
       eventBus.api.getToken()
         .then(()=>{
+          eventBus.api.time().then(res=>{
+		this.tick = res.time - 3295048
+	  })
           let rooms = []
           let statName = 'owner0'
           for (let x = 0;x<=11;x++) {

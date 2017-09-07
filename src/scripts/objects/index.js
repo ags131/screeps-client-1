@@ -1,5 +1,6 @@
 
 import constructedWall from './constructedWall';
+import constructionSite from './constructionSite';
 import container from './container';
 import controller from './controller';
 import creep from './creep';
@@ -22,6 +23,7 @@ import unknown from './unknown';
 
 export default {
 	constructedWall,
+	constructionSite,
 	container,
 	controller,
 	creep,

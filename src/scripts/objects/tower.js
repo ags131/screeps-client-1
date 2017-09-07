@@ -53,7 +53,7 @@ export default class Tower extends GameObject {
 		const r = S(7); // radius
 
 		g.clear();
-		g.lineStyle(2, 0xffffff, 1);
+		g.lineStyle(1, 0x8FBB93, 1);
 		g.beginFill(0x000000);
 		g.drawCircle(m, m, r);
 		g.endFill();

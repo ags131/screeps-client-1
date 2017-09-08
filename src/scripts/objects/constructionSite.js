@@ -12,7 +12,7 @@ export default class Extractor extends GameObject {
 		let obj = super.update(dobj, room);
 
 		let g = this.g;
-    
+
     let ang = (ang) => ang * (Math.PI / 180)
     g.lineStyle(2, 0x8FBB93, 1)
     let m = S(5)
@@ -24,6 +24,6 @@ export default class Extractor extends GameObject {
 
   preRender(ts) {
     super.preRender(ts);
-    this.g.alpha = (((Math.sin(ts / 500) / 2) + 0.5) * 0.5) + 0.5;
+    this.g.alpha = (((Math.sin(ts / 500) / 2) + 0.5) * 0.8) + 0.2;
   }
 }

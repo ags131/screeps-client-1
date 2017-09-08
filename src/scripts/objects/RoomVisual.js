@@ -15,6 +15,11 @@ const STRUCTURE_TOWER = 'tower'
 const STRUCTURE_LINK = 'link'
 const STRUCTURE_TERMINAL = 'terminal'
 const STRUCTURE_ROAD = 'road'
+const STRUCTURE_RAMPART = 'rampart'
+const STRUCTURE_WALL = 'wall'
+const STRUCTURE_STORAGE = 'storage'
+const STRUCTURE_OBSERVER = 'observer'
+const STRUCTURE_NUKER = 'nuker'
 
 export default class RoomVisual {
   constructor(canvas){

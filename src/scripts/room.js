@@ -59,6 +59,8 @@ export class Room {
       'lab',
       'link',
       'mineral',
+      'nuker',
+      'observer',
       'extractor',
       'source',
       'controller',

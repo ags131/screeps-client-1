@@ -18,6 +18,7 @@ import extractor from './extractor';
 import lab from './lab'
 import terminal from './terminal'
 import nuker from './RVObject'
+import observer from './RVObject'
 
 import unknown from './unknown';
 
@@ -41,5 +42,6 @@ export default {
 	lab,
 	terminal,
 	nuker,
+	observer,
 	unknown,
 }
